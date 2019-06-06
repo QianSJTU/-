@@ -50,4 +50,52 @@ def getMinPath(arr):
 if __name__=="__main__":
     arr=[[1,2,3],[8,7,5],[2,1,5]]
     print(getMinPath(arr))
-            
+题目二：如何求字符串的编辑距离：
+class EditDistance:
+    def mins(self,a,b,c):
+        tmp=a if a<b else b
+        return tmp if tmp<c else c
+    def edit(self,s1,s2,replaceWight):
+        if s1==None and s2==None:
+            return 0
+        if s1==None:
+            return len(s2)
+        if s2==None:
+            return len(s1)
+        len1=len(s1)
+        len2=len(s2)
+        D=[([None]*(len2+1)) for i in range(len1+1)]
+        i=0
+        while i<len1+1:
+            D[i][0]=i
+            i+=1
+        i=0
+        while i<len2+1:
+            D[0][i]=i
+            i+=1
+        i=1
+        while i<len1+1:
+            j=1
+            while j<len2+1:
+                if list(s1)[i-1]==list(s2)[j-1]:
+                    D[i][j]=self.mins(D[i-1][j]+1,D[i][j-1]+1,D[i-1][j-1])
+                else:
+                    D[i][j]=self.mins(D[i-1][j]+1,D[i][j-1]+1,D[i-1][j-1]+replaceWight)
+                j+=1
+            i+=1
+        i=0
+        while i<len1+1:
+            j=0
+            while j<len2+1:
+                print(D[i][j],end=" ")
+                j+=1
+            print("\n")
+            i+=1
+        dis=D[len1][len2]
+        return dis
+if __name__=="__main__":
+    s1="bclin"
+    s2="fciling"
+    ed=EditDistance()
+    print("编辑距离为："+str(ed.edit(s1,s2,1)))
+                
